@@ -1,0 +1,17 @@
+__pycache__/
+.idea/
+.ipynb_checkpoints/
+caches/
+data/
+json/
+selenium_test/
+wordcross/
+*.jpg
+*.png
+*.gif
+*.pdf
+*.json
+*.csv
+*.pkl
+*.mp4
+*.ttf
