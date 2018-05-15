@@ -178,16 +178,16 @@ class Search(object):
             return [Bangumi(result['sid']) for result in self.results[0]['bgmlist']]
 
 
-if __name__ == '__main__':
-    import pickle
+# if __name__ == '__main__':
+#     import pickle
 
-    search = Search('video', 'VAN')
-    results = search.get_results()
-    danmaku_list = DanmakuList([])
-    for video in results:
-        video.get_danmaku()
-        danmaku_list.extend(video.danmaku_list)
-    print('Length of danmaku_list:', len(danmaku_list))
+#     search = Search('video', 'VAN')
+#     results = search.get_results()
+#     danmaku_list = DanmakuList([])
+#     for video in results:
+#         video.get_danmaku()
+#         danmaku_list.extend(video.danmaku_list)
+#     print('Length of danmaku_list:', len(danmaku_list))
     
-    with open('VAN.pkl', 'wb') as f:
-        pickle.dump(danmaku_list, f)
+#     with open('VAN.pkl', 'wb') as f:
+#         pickle.dump(danmaku_list, f)
