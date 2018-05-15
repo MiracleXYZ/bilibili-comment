@@ -1,3 +1,3 @@
-# B站弹幕爬取
+# A Bilibili Danmaku Crawler
 
-主文件：`bilibili.py`
+Main file: `bilibili.py`
