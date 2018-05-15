@@ -1,4 +1,4 @@
-from main import wordcloud_workflow
+from old_main import wordcloud_workflow
 from os.path import join
 from PIL import Image
 

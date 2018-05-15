@@ -1,7 +1,7 @@
 import json
 import requests
 import time
-from Vtubers import user_similarity_analysis
+from similarity import user_similarity_analysis
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'

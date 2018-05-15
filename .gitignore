@@ -5,6 +5,7 @@ caches/
 data/
 json/
 selenium_test/
+tutorials/
 wordcross/
 *.jpg
 *.png
