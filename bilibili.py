@@ -180,6 +180,85 @@ class Search(object):
         elif self.search_type == 'bangumi' or 'pgc':
             return [Bangumi(result['sid']) for result in self.results[0]['bgmlist']]
 
+class Topic(object):
+    def __init__(self, topic_name):
+        self.name = topic_name
+        self.__new_feed = 'https://api.vc.bilibili.com/topic_svr/v1/topic_svr/topic_new?topic_name={}'.format(topic_name)
+        self.__history_feed = 'https://api.vc.bilibili.com/topic_svr/v1/topic_svr/topic_history?topic_name={}'.format(topic_name) + '&offset_dynamic_id={}'
+    def get_new_cards(self):
+        print('Getting new cards...')
+        new_feed_data = requests.get(self.__new_feed, headers=HEADERS)
+        new_feed_data.encoding = 'utf-8'
+        new_feed = json.loads(new_feed_data.text)
+        new_cards = new_feed['data']['cards']
+        self.new_cards = new_cards
+    def get_history_cards(self):
+        print('Getting history cards...')
+        history_cards = []
+        dynamic_id = 0
+        while 1:
+            feed_data = requests.get(self.__history_feed.format(dynamic_id), headers=HEADERS)
+            feed_data.encoding = 'utf-8'
+            feed = json.loads(feed_data.text)['data']
+            history_cards.extend(feed['cards'])
+            dynamic_id = feed['cards'][-1]['desc']['dynamic_id']
+            print(dynamic_id)
+            if feed['has_more'] == 0:
+                break
+        self.history_cards = history_cards
+    def get_feed(self):
+        self.get_new_cards()
+        self.get_history_cards()
+        self.cards = self.new_cards + self.history_cards
+        self.cards_info = [json.loads(card['card']) for card in self.cards]
+        self.cards_text = DanmakuList(sum([get_card_text(card_info) for card_info in self.cards_info], []))
+        self.usernames = sum([get_user_name(card_info) for card_info in self.cards_info], [])
+    
+    
+def get_card_text(card_info):
+    text = DanmakuList([])
+    if 'origin' in card_info.keys():
+        text.append(card_info['item']['content'])
+        text.extend(get_card_text(json.loads(card_info['origin'])))
+    elif 'aid' in card_info.keys():
+        text.append(card_info['title'])
+        text.append(card_info['desc'])
+        text.append(card_info['dynamic'])
+    elif 'summary' in card_info.keys():
+        text.append(card_info['title'])
+        text.append(card_info['summary'])
+    else:
+        try:
+            if 'description' in card_info['item'].keys():
+                text.append(card_info['item']['description'])
+            if 'content' in card_info['item'].keys():
+                text.append(card_info['item']['content'])
+        except Exception as e:
+            print(card_info)
+            raise e
+    return text
+
+def get_user_name(card_info):
+    usernames = []
+    if 'origin' in card_info.keys():
+        usernames.extend(get_user_name(json.loads(card_info['origin'])))
+    elif 'aid' in card_info.keys():
+        usernames.append(card_info['owner']['name'])
+    elif 'summary' in card_info.keys():
+        usernames.append(card_info['author']['name'])
+    else:
+        if 'uname' in card_info['user'].keys():
+            usernames.append(card_info['user']['uname'])
+        if 'name' in card_info['user'].keys():
+            usernames.append(card_info['user']['name'])
+    return usernames
+    
+
+
+        
+
+
+
 
 # if __name__ == '__main__':
 #     import pickle
