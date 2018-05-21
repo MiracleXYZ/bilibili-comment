@@ -1,3 +1,6 @@
+import os,sys 
+parentdir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+sys.path.insert(0, parentdir)  
 from bilibili import *
 from pyecharts import Bar
 import jieba
@@ -17,4 +20,4 @@ attr, values = zip(*tags)
 values = [round(value * 100, 2) for value in values]
 bar = Bar('UNNATURAL弹幕词频分析', 'by @MiracleXYZ')
 bar.add('UNNATURAL', attr, values, xaxis_interval=0)
-bar.render('./images/unnatural/unnatural_no_stop.html')
+bar.render('./images/unnatural/unnatural_no_stop_html.png')

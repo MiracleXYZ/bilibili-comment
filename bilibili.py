@@ -7,6 +7,7 @@ import re
 import jieba
 import jieba.analyse
 from tqdm import tqdm, trange
+import numpy as np
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, ImageColorGenerator
 from selenium import webdriver
@@ -30,6 +31,8 @@ class DanmakuList(list):
         self.tags = tags
     def gen_wordcloud(self, mask, font, scale, random_state):
         coloring = plt.imread(mask)
+        if coloring.dtype != np.uint8:
+            coloring = (coloring * 255).astype(np.uint8)
         image_colors = ImageColorGenerator(coloring)
         wordCloud = WordCloud(
             background_color="white",
@@ -136,7 +139,7 @@ class Bangumi(object):
     def get_danmaku(self):
         print('Getting danmaku for bangumi...')
         danmaku_list = DanmakuList([])
-        for episode in self.episodes:
+        for episode in tqdm(self.episodes, ascii=True):
             episode.crawl_danmaku()
             danmaku_list.extend(episode.danmaku_list)
         self.danmaku_list = danmaku_list

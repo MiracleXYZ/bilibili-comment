@@ -35,4 +35,4 @@ def danmaku_wc(keyword, mask, output):
     danmaku_list.generate_wordcloud(mask, output)
 
 if __name__ == '__main__':
-    danmaku_wc('比利', './images/billy02_2.jpg', './images/billyoutput.png')
+    danmaku_wc('与ta恋爱的话', './images/heart2.jpg', './images/heart_output.png')

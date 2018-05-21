@@ -3,9 +3,11 @@ __pycache__/
 .ipynb_checkpoints/
 caches/
 data/
+images/
 json/
 selenium_test/
 tutorials/
+weekly/
 wordcross/
 *.jpg
 *.png
